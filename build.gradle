@@ -1,0 +1,87 @@
+plugins {
+    id 'java'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
+    id 'org.jetbrains.intellij' version '1.2.1'
+    id "jacoco"
+    id "org.sonarqube" version "3.3"
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled false
+        csv.enabled true
+        csv.destination file("${buildDir}/reports/jacoco.csv")
+        xml.enabled true
+        xml.destination file("${buildDir}/reports/jacoco.xml")
+    }
+}
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+}
+group 'p532.fall21.finalproject.team3'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //JUnit & Testing
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    //JavaFX and Swing
+    implementation 'org.openjfx:javafx-swing:11-ea+24'
+    //Log4J EXCLUSION -- This is because JGit's logger conflicts with IntelliJ's logger
+    configurations.implementation {
+        exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
+        exclude group: 'org.slf4j'
+    }
+
+    // https://mvnrepository.com/artifact/org.mockito/mockito-all
+    testImplementation group: 'org.mockito', name: 'mockito-all', version: '1.8.4'
+
+    // https://mvnrepository.com/artifact/org.mockito/mockito-all
+    testImplementation 'org.mockito:mockito-all:1.8.4'
+
+    //JGit
+    implementation 'org.eclipse.jgit:org.eclipse.jgit:5.13.0.202109080827-r'
+    implementation 'org.eclipse.jgit:org.eclipse.jgit.archive:5.13.0.202109080827-r'
+    implementation 'org.eclipse.jgit:org.eclipse.jgit.ssh.jsch:5.13.0.202109080827-r'
+}
+
+// See https://github.com/JetBrains/gradle-intellij-plugin/
+intellij {
+    version = '2021.2.3'
+}
+
+patchPluginXml {
+    changeNotes = """
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>"""
+}
+
+test {
+    useJUnitPlatform()
+}
+
+javafx {
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.swing']
+    version = '11.0.2'
+}
+
+// Fixed runIde issue below:
+// 2021-10-27 13:26:58,167 [   1656]   WARN - j.internal.DebugAttachDetector - Unable to start DebugAttachDetector, please add `--add-exports java.base/jdk.internal.vm=ALL-UNNAMED` to VM options
+// https://stackoverflow.com/questions/60027717/intellij-idea-vm-options
+// https://stackoverflow.com/questions/58133725/how-to-fix-jvm-options-exports-javafx-11-to-com-jfoenix-on-gradle-idea
+runIde {
+    jvmArgs = [
+            '--add-exports',
+            'java.base/jdk.internal.vm=ALL-UNNAMED'
+    ]
+}

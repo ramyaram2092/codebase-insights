@@ -1,0 +1,33 @@
+<idea-plugin>
+    <id>edu.indiana.luddy.p532.fall21.finalproject.team3</id>
+    <name>Codebase Heatmap Insight</name>
+    <vendor email="ebehar@iu.edu">P532 Final Project</vendor>
+
+    <description><![CDATA[
+    A plugin that will analyze the commit history of a branch and create a heatmap based on various options and weights provided by the user.<br>
+    ]]></description>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="Codebase Heatmap" secondary="false" icon="AllIcons.General.ProjectStructure" anchor="left"
+                    factoryClass="intellij_extension.CodebaseInsightsToolWindowFactory"/>
+        <preloadingActivity
+                implementation="intellij_extension.controllers.HeatMapController"/>
+    </extensions>
+
+<!--    <actions>-->
+<!--        &lt;!&ndash; Add your actions here &ndash;&gt;-->
+<!--        <action id="PopupDialogAction" class="PopupDialogAction" text="Test Action Basics Plugin: Pop Dialog Action"-->
+<!--                description="Going through tutorial. This is a testcase.">-->
+<!--            <override-text place="MainMenu" text="Pop Dialog Action"/>-->
+<!--            <keyboard-shortcut first-keystroke="control alt A" second-keystroke="C" keymap="$default"/>-->
+<!--            <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>-->
+<!--            <add-to-group group-id="ToolsMenu" anchor="first"/>-->
+<!--        </action>-->
+<!--    </actions>-->
+
+</idea-plugin>
